@@ -6,6 +6,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 
 from retriever import retriever
 
@@ -13,12 +14,15 @@ load_dotenv()
 
 client = httpx.Client(verify=os.getenv("SSL_VERIFY", "true").lower() != "false")
 
-llm = ChatOpenAI(
-    base_url=os.getenv("BASE_URL"),
-    model=os.getenv("MODEL"),
-    api_key=os.getenv("API_KEY"),
-    http_client=client,
-)
+# llm = ChatOpenAI(
+#     base_url=os.getenv("BASE_URL"),
+#     model=os.getenv("MODEL"),
+#     api_key=os.getenv("API_KEY"),
+#     http_client=client,
+# )
+
+#ollama chat model
+llm = ChatOllama(model=os.getenv("MODEL", "qwen3:latest "), temperature=0)
 
 # NOTE: reconstructed from a screenshot where some lines were cut off.
 # Compare with your original prompt and restore the exact wording if needed.
